@@ -4,6 +4,7 @@ import com.alura.springboot.demo.model.Artista;
 import com.alura.springboot.demo.model.Musica;
 import com.alura.springboot.demo.model.TipoArtista;
 import com.alura.springboot.demo.repository.ArtistasRepository;
+import com.alura.springboot.demo.service.ConsultaChatGpt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class Principal {
                     1 - Cadastrar artistas
                     2 - Cadastrar Músicas
                     3 - Listar Músicas
-                    4 - Buscar artistas
+                    4 - Buscar Músicas por artistas
                     5 - Pesquisar dados sobre um artista
                     
                     0 - Sair
@@ -54,7 +55,7 @@ public class Principal {
                     break;
 
                 case 4:
-                    buscarArtistas();
+                    buscarMusicasPorArtistas();
                     break;
 
                 case 5:
@@ -72,20 +73,27 @@ public class Principal {
     }
 
     private void pesquisarDados() {
+        System.out.println("Pesquisar dados sobre qual artista: ");
+        var nomeArtista = sc.nextLine();
 
+        var response = ConsultaChatGpt.obterInformacao(nomeArtista);
+        System.out.println(response.trim());
     }
 
-    private void buscarArtistas() {
+    private void buscarMusicasPorArtistas() {
 
-        List<Artista> artistas = repositorio.findAll();
-        artistas.forEach(System.out::println);
+        System.out.println("Buscar musicas de que artista: ");
+        var nome = sc.nextLine();
 
+        List<Musica> musicas = repositorio.buscaMusicasPorArtista(nome);
+        musicas.forEach(System.out::println);
     }
 
     private void listarMusicas() {
 
-        List<Artista> musicas = repositorio.findAll();
-        musicas.forEach(System.out::println);
+        List<Artista> artistas = repositorio.findAll();
+        // Utilizando função Lambda para exibir as musicas do artista
+        artistas.forEach(a -> a.getMusicas().forEach(System.out::println));
     }
 
     private void cadastrarMusicas() {
