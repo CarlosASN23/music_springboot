@@ -19,14 +19,13 @@ public class Artista {
     @Enumerated(EnumType.STRING)
     private TipoArtista tipoArtista;
 
-    @OneToMany(mappedBy = "artista")
+    @OneToMany(mappedBy = "artista", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<Musica> musicas = new ArrayList<>();
 
     // Construtor sem passagem de parâmetros
-    public Artista(String nome, String tipoArtista){}
+    public Artista(){}
 
     // Construtor com passagem de parâmetros
-
 
     public Artista(String nome, TipoArtista tipoArtista) {
         this.nome = nome;
@@ -68,8 +67,8 @@ public class Artista {
     @Override
     public String toString() {
         return "Artista: " +
-                "Nome= " + nome +
-                "Tipo Artista= " + tipoArtista +
-                "Musicas= " + musicas;
+                " Nome= " + nome +
+                " Tipo Artista= " + tipoArtista +
+                " Musicas= " + musicas;
     }
 }

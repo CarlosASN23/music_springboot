@@ -14,6 +14,14 @@ public class Musica {
     @ManyToOne
     private Artista artista;
 
+    // Construtor sem passagem de parâmetros
+    public Musica(){}
+
+    // Construtor com passagem de parâmetros
+    public Musica(String nomeMusica) {
+        this.titulo = nomeMusica;
+    }
+
     public Long getId() {
         return id;
     }
@@ -41,7 +49,7 @@ public class Musica {
     @Override
     public String toString() {
         return "Musica: " +
-                "Titulo= " + titulo +
-                "Artista= " + artista;
+                " Titulo= " + titulo +
+                " Artista= " + artista.getNome();
     }
 }

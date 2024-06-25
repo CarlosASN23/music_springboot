@@ -1,9 +1,13 @@
 package com.alura.springboot.demo.principal;
 
 import com.alura.springboot.demo.model.Artista;
+import com.alura.springboot.demo.model.Musica;
 import com.alura.springboot.demo.model.TipoArtista;
 import com.alura.springboot.demo.repository.ArtistasRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Principal {
@@ -25,7 +29,7 @@ public class Principal {
                     1 - Cadastrar artistas
                     2 - Cadastrar Músicas
                     3 - Listar Músicas
-                    4 - Buscar músicas por artistas
+                    4 - Buscar artistas
                     5 - Pesquisar dados sobre um artista
                     
                     0 - Sair
@@ -73,13 +77,40 @@ public class Principal {
 
     private void buscarArtistas() {
 
+        List<Artista> artistas = repositorio.findAll();
+        artistas.forEach(System.out::println);
+
     }
 
     private void listarMusicas() {
 
+        List<Artista> musicas = repositorio.findAll();
+        musicas.forEach(System.out::println);
     }
 
     private void cadastrarMusicas() {
+
+        System.out.println("Cadastrar música de que artista: ");
+        var nome = sc.nextLine();
+        // Criando uma derived Querie
+        Optional<Artista> artista = repositorio.findByNomeContainingIgnoreCase(nome);
+
+        if(artista.isPresent()){
+
+            System.out.println("Informe o titulo da música: ");
+            var nomeMusica= sc.nextLine();
+
+            Musica musica = new Musica(nomeMusica);
+            // Adicionando a musica a lista de musica do artista
+            artista.get().getMusicas().add(musica);
+
+            // Criando o vinculo bidirecional onde a musica é vinculada ao artista
+            musica.setArtista(artista.get());
+            repositorio.save(artista.get());
+
+        } else{
+            System.out.println("Artista não encontrado");
+        }
 
     }
 
