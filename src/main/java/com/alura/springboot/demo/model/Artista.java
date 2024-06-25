@@ -22,6 +22,17 @@ public class Artista {
     @OneToMany(mappedBy = "artista")
     private List<Musica> musicas = new ArrayList<>();
 
+    // Construtor sem passagem de parâmetros
+    public Artista(String nome, String tipoArtista){}
+
+    // Construtor com passagem de parâmetros
+
+
+    public Artista(String nome, TipoArtista tipoArtista) {
+        this.nome = nome;
+        this.tipoArtista = tipoArtista;
+    }
+
     public Long getId() {
         return id;
     }

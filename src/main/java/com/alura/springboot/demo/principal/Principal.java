@@ -1,10 +1,20 @@
 package com.alura.springboot.demo.principal;
 
+import com.alura.springboot.demo.model.Artista;
+import com.alura.springboot.demo.model.TipoArtista;
+import com.alura.springboot.demo.repository.ArtistasRepository;
+
 import java.util.Scanner;
 
 public class Principal {
 
+    private final ArtistasRepository repositorio;
     private Scanner sc = new Scanner(System.in);
+
+    public Principal(ArtistasRepository repositorio) {
+        this.repositorio = repositorio;
+    }
+
     public void exibeMenu() {
 
         var opcao = -1;
@@ -74,6 +84,25 @@ public class Principal {
     }
 
     private void cadastrarArtistas() {
+
+        var cadastrarNovo = "S";
+
+        while(cadastrarNovo.equalsIgnoreCase("s")) {
+            System.out.println("Informe o nome do artista: ");
+            var nome = sc.nextLine();
+
+            System.out.println("Informe o tipo do artista (SOLO, DUPLA, BANDA):");
+            var tipoArtista = sc.nextLine();
+
+            TipoArtista tipoTipo = TipoArtista.valueOf(tipoArtista.toUpperCase());
+            Artista artista = new Artista(nome, tipoTipo);
+
+            repositorio.save(artista);
+
+            // Recursivo chamamento de um novo artista
+            System.out.println("Deseja cadastrar um novo artista: (S/N)");
+            cadastrarNovo = sc.nextLine();
+        }
 
     }
 }
